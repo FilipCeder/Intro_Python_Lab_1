@@ -27,13 +27,9 @@ def tokenize(lines):
                 start = end # starts over after the digit word
             
             elif start < len(line):
-                end = start + 1
-                while end < len(line) and line[end].isdigit() == False and line[end].isspace() == False and line[end].isalpha() == False: # itterates through the sentence until it isnt a symbol
-                     end +=1
-
-                #print(line[start:end], "is a symbol")
-                words.append(line[start:end].lower()) # puts the symbol "word" in a list through the range from start to end 
-                start = end # starts over efter the symbol "word"
+                
+                words.append(line[start].lower()) # puts the symbol "word" in a list through the range from start to end 
+                start +=1 # starts over efter the symbol "word"
     return words # returns a list
 
 # this function takes input of a list of words and stopWords and gives the output of a dictionary with words and the number of times it appears
@@ -50,12 +46,22 @@ def countWords(words, stopWords):
                    wordsDict[word] = 1 # if not in the dictionary add it with count 1 
     return wordsDict #return the dictionary
 
+
+
+
 def printTopMost(frequencies, n):
      sortedDict = sorted(frequencies.items(), key = lambda x:x[1]) # looks at the value and not the keys and makes a sorted list 
      i = 0
      sortedList = []
      while i < n and n < len(sortedDict):
+          
+          
+          
           sortedList.append(str(str(sortedDict[(-i-1)][0].ljust(20))+ str(sortedDict[(-i-1)][1]).rjust(5)))
+          
+          
+          
+          
           print(sortedDict[(-i-1)][0].ljust(20)+ str(sortedDict[(-i-1)][1]).rjust(5))
           i +=1
      
@@ -63,7 +69,6 @@ def printTopMost(frequencies, n):
      return returnString
 
 
- 
 
 
 
