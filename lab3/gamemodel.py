@@ -60,13 +60,15 @@ class Player:
         return projectile
 
     def projectileDistance(self, proj):
-        playerLeftEdge = self.posx - self.cannonSize / 2
-        playerRightEdge = self.posx + self.cannonSize / 2
-        projectileLeftEdge = proj.getX() - self.ballSize  
-        projectileRightEdge = proj.getX() + self.ballSize  
-        
-        # Calculate the X-distance between projectile and player
-        distance = max(0, min(projectileRightEdge, playerRightEdge) - max(projectileLeftEdge, playerLeftEdge))
+        playerCenter = self.posx
+        cannonLeftEdge = playerCenter - self.cannonSize / 2
+        cannonRightEdge = playerCenter + self.cannonSize / 2
+        projectileCenter = proj.getX()
+
+        if projectileCenter - playerCenter < 0:
+            distance = projectileCenter - playerCenter + (self.cannonSize / 2 + self.ballSize)
+        else:
+            distance = projectileCenter - playerCenter - (self.cannonSize / 2 + self.ballSize)
         return distance
 
 
@@ -122,3 +124,4 @@ class Projectile:
 
     def getY(self):
         return self.yPos
+
