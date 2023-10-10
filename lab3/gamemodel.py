@@ -54,7 +54,9 @@ class Player:
         self.score = 0
 
     def fire(self, angle, velocity):
-        projectile = Projectile(self.angle, self.velocity, self.game.getCurrentWind(), self.posx, 5, -self.game.getCannonSize() / 2, self.game.getCannonSize() / 2)
+        self.angle = angle  # Update the angle
+        self.velocity = velocity  # Update the velocity
+        projectile = Projectile(self.angle, self.velocity, self.game.getCurrentWind(), self.posx, 5, -110, 110)
         return projectile
 
     def projectileDistance(self, proj):
