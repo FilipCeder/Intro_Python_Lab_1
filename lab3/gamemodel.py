@@ -6,8 +6,8 @@ import random
 """ This is the model of the game"""
 class Game:
     def __init__(self, cannonSize, ballSize):
-        self.player0 = Player(self, "blue", -90, cannonSize, ballSize)
-        self.player1 = Player(self, "red", 90, cannonSize, ballSize)
+        self.player0 = Player(self, "blue", -90, cannonSize, ballSize, False)
+        self.player1 = Player(self, "red", 90, cannonSize, ballSize, True)
         self.currentPlayer = self.player0
         self.wind = 0
 
@@ -43,7 +43,7 @@ class Game:
 
 """ Models a player """
 class Player:
-    def __init__(self, game, color, posx, cannonSize, ballSize):
+    def __init__(self, game, color, posx, cannonSize, ballSize, isReversed):
         self.game = game
         self.color = color
         self.posx = posx
@@ -52,30 +52,32 @@ class Player:
         self.angle = 45
         self.velocity = 40
         self.score = 0
+        self.isReversed = isReversed
 
     def fire(self, angle, velocity):
-        self.angle = angle  # Update the angle
+        self.angle = angle
+        if self.isReversed:
+            self.angle = 180 - angle  # Update the angle
         self.velocity = velocity  # Update the velocity
         projectile = Projectile(self.angle, self.velocity, self.game.getCurrentWind(), self.posx, 5, -110, 110)
         return projectile
 
     def projectileDistance(self, proj):
         playerCenter = self.posx
-        cannonLeftEdge = playerCenter - self.cannonSize / 2
-        cannonRightEdge = playerCenter + self.cannonSize / 2
         projectileCenter = proj.getX()
-
         if projectileCenter - playerCenter < 0:
             distance = projectileCenter - playerCenter + (self.cannonSize / 2 + self.ballSize)
         else:
             distance = projectileCenter - playerCenter - (self.cannonSize / 2 + self.ballSize)
+        if abs(distance) <= (self.cannonSize / 2 + self.ballSize):
+            return 0
         return distance
 
 
     def getScore(self):
         return self.score
 
-    def increaseScore(self):
+    def increaseScore(self):         
         self.score += 1
 
     def getColor(self):

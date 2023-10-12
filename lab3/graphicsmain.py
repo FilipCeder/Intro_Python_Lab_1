@@ -9,9 +9,12 @@ class GameGraphics:
         # open the window
         self.win = GraphWin("Cannon game" , 640, 480, autoflush=False)
         self.win.setCoords(-110, -10, 110, 155)
-        
         # draw the terrain
         # TODO: Draw a line from (-110,0) to (110,0)
+        p1 = Point(-110,0)
+        p2 = Point(110,0)
+        L12 = Line(p1,p2)
+        L12.draw(self.win)
 
         self.draw_cannons = [self.drawCanon(0), self.drawCanon(1)]
         self.draw_scores  = [self.drawScore(0), self.drawScore(1)]
