@@ -27,6 +27,7 @@ class GameGraphics:
        player= self.game.getPlayers()[playerNr]
        canoncolor = player.getColor()
        
+       #Draws a rectangle for the current player at the predifined position and sets its color to the predifined color
        rectangle = Rectangle(Point(player.getX()-cannonsize/2, cannonsize), Point(player.getX()+cannonsize/2, 0))
        rectangle.setFill(canoncolor)
        rectangle.setOutline(canoncolor)
@@ -36,12 +37,7 @@ class GameGraphics:
 
 
     def drawScore(self,playerNr):
-        # draw the score
-        # TODO: draw the text "Score: X", where X is the number of points
-        # for player number playerNr. The text should be placed under
-        # the corresponding cannon. After the drawing,
-        # return the text object.
-
+        #Adds a score counter to the canvas under the player
         player= self.game.getPlayers()[playerNr]
         score = player.getScore()
         p = Point(player.getX(), -6)
@@ -61,39 +57,34 @@ class GameGraphics:
 
         ballsize = self.game.getBallSize()
 
-    
+        #If the current player already has a cannonball on the canvas, remove it
         if self.draw_projs[playerNumber] is not None:
                 self.draw_projs[playerNumber].undraw()
 
+        #Draws a circle at the point of the projectile to symbolize the cannonball
         p = Point(circle_X, circle_Y)
-
         circle = Circle(p, ballsize)
         circle.setFill(player.getColor())
         circle.draw(self.win)
         self.draw_projs[playerNumber]=circle
-        
+
+        # Moves the cannonball on the canvas while the projectile is moving
         while proj.isMoving():
             proj.update(1/50)
-
-            # move is a function in graphics. It moves an object dx units in x direction and dy units in y direction
             circle.move(proj.getX() - circle_X, proj.getY() - circle_Y)
-
             circle_X = proj.getX()
             circle_Y = proj.getY()
-
             update(50)
 
         return proj
 
-    def updateScore(self,playerNr):
+    def updateScore(self,playerNr): #Removes the curret score text for the actial player and draws a new score text with the updated score
         player= self.game.getPlayers()[playerNr]
-        
         
         self.draw_scores[playerNr].undraw()
         text = self.drawScore(playerNr)
         self.draw_scores[playerNr] = text
-        # update the score on the screen
-        # TODO: undraw the old text, create and draw a new text
+
         pass
 
     def play(self):
@@ -125,11 +116,12 @@ class GameGraphics:
             self.game.nextPlayer()
 
 
-    def explode(self):
+    def explode(self): #Animates a simple explosion when a player is hit
         player= self.game.getCurrentPlayer()
         target = self.game.getOtherPlayer()
         cannonSize = self.game.getCannonSize()
         ballsize = self.game.getBallSize()
+        #The explosion ranges in size from the ballsize to twice the cannonsize
         r = ballsize
         p = Point(target.getX(), 0)
         while r <= (2*cannonSize):
